@@ -1,0 +1,651 @@
+use AdventureWorks_ETL
+/*
+===============================================================================
+Stored Procedure: Load Bronze Layer (AdventureWorks2022 -> Bronze)
+===============================================================================
+Script Purpose:
+    This stored procedure loads data into the 'bronze' schema directly from 
+    the AdventureWorks2022 database tables.
+    It performs the following actions:
+    - Truncates the bronze tables before loading data.
+    - Uses 'INSERT INTO ... SELECT' to load data.
+
+Parameters:
+    None. 
+    This stored procedure does not accept any parameters or return any values.
+
+Usage Example:
+    EXEC bronze.load_bronze;
+===============================================================================
+*/
+
+CREATE OR ALTER PROCEDURE bronze.load_bronze AS 
+BEGIN
+    DECLARE @batch_start_time DATETIME, @batch_end_time DATETIME;
+    DECLARE @start_time DATETIME, @end_time DATETIME;
+    
+    SET @batch_start_time = GETDATE();
+
+    BEGIN TRY
+        PRINT '================================================';
+        PRINT 'Loading Bronze Layer from AdventureWorks2022';
+        PRINT '================================================';
+
+        -- =============================================
+        -- 1. Loading Schema: Person
+        -- =============================================
+        PRINT '------------------------------------------------';
+        PRINT 'Loading Person Tables';
+        PRINT '------------------------------------------------';
+
+        -- Person_Person
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_Person';
+        TRUNCATE TABLE bronze.Person_Person;
+        INSERT INTO bronze.Person_Person SELECT * FROM AdventureWorks2022.Person.Person;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_Address
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_Address';
+        TRUNCATE TABLE bronze.Person_Address;
+        INSERT INTO bronze.Person_Address SELECT * FROM AdventureWorks2022.Person.Address;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_AddressType
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_AddressType';
+        TRUNCATE TABLE bronze.Person_AddressType;
+        INSERT INTO bronze.Person_AddressType SELECT * FROM AdventureWorks2022.Person.AddressType;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_StateProvince
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_StateProvince';
+        TRUNCATE TABLE bronze.Person_StateProvince;
+        INSERT INTO bronze.Person_StateProvince SELECT * FROM AdventureWorks2022.Person.StateProvince;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_CountryRegion
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_CountryRegion';
+        TRUNCATE TABLE bronze.Person_CountryRegion;
+        INSERT INTO bronze.Person_CountryRegion SELECT * FROM AdventureWorks2022.Person.CountryRegion;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_EmailAddress
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_EmailAddress';
+        TRUNCATE TABLE bronze.Person_EmailAddress;
+        INSERT INTO bronze.Person_EmailAddress SELECT * FROM AdventureWorks2022.Person.EmailAddress;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_PhoneNumberType
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_PhoneNumberType';
+        TRUNCATE TABLE bronze.Person_PhoneNumberType;
+        INSERT INTO bronze.Person_PhoneNumberType SELECT * FROM AdventureWorks2022.Person.PhoneNumberType;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_PersonPhone
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_PersonPhone';
+        TRUNCATE TABLE bronze.Person_PersonPhone;
+        INSERT INTO bronze.Person_PersonPhone SELECT * FROM AdventureWorks2022.Person.PersonPhone;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_BusinessEntity
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_BusinessEntity';
+        TRUNCATE TABLE bronze.Person_BusinessEntity;
+        INSERT INTO bronze.Person_BusinessEntity SELECT * FROM AdventureWorks2022.Person.BusinessEntity;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_BusinessEntityAddress
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_BusinessEntityAddress';
+        TRUNCATE TABLE bronze.Person_BusinessEntityAddress;
+        INSERT INTO bronze.Person_BusinessEntityAddress SELECT * FROM AdventureWorks2022.Person.BusinessEntityAddress;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_BusinessEntityContact
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_BusinessEntityContact';
+        TRUNCATE TABLE bronze.Person_BusinessEntityContact;
+        INSERT INTO bronze.Person_BusinessEntityContact SELECT * FROM AdventureWorks2022.Person.BusinessEntityContact;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_ContactType
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_ContactType';
+        TRUNCATE TABLE bronze.Person_ContactType;
+        INSERT INTO bronze.Person_ContactType SELECT * FROM AdventureWorks2022.Person.ContactType;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Person_Password
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Person_Password';
+        TRUNCATE TABLE bronze.Person_Password;
+        INSERT INTO bronze.Person_Password SELECT * FROM AdventureWorks2022.Person.Password;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+
+        -- =============================================
+        -- 2. Loading Schema: HumanResources
+        -- =============================================
+        PRINT '------------------------------------------------';
+        PRINT 'Loading HumanResources Tables';
+        PRINT '------------------------------------------------';
+
+        -- HR_Department
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.HR_Departments';
+        TRUNCATE TABLE bronze.HR_Departments;
+        INSERT INTO bronze.HR_departments SELECT * FROM AdventureWorks2022.HumanResources.Department;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- HR_Employee
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.HR_Employee';
+        TRUNCATE TABLE bronze.HR_Employee;
+        INSERT INTO bronze.HR_Employee SELECT * FROM AdventureWorks2022.HumanResources.Employee;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- HR_EmployeeDepartmentHistory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.HR_EmployeeDepartmentHistory';
+        TRUNCATE TABLE bronze.HR_EmployeeDepartmentHistory;
+        INSERT INTO bronze.HR_EmployeeDepartmentHistory SELECT * FROM AdventureWorks2022.HumanResources.EmployeeDepartmentHistory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- HR_EmployeePayHistory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.HR_EmployeePayHistory';
+        TRUNCATE TABLE bronze.HR_EmployeePayHistory;
+        INSERT INTO bronze.HR_EmployeePayHistory SELECT * FROM AdventureWorks2022.HumanResources.EmployeePayHistory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- HR_JobCandidate
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.HR_JobCandidate';
+        TRUNCATE TABLE bronze.HR_JobCandidate;
+        INSERT INTO bronze.HR_JobCandidate SELECT * FROM AdventureWorks2022.HumanResources.JobCandidate;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- HR_Shift
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.HR_Shift';
+        TRUNCATE TABLE bronze.HR_Shift;
+        INSERT INTO bronze.HR_Shift SELECT * FROM AdventureWorks2022.HumanResources.Shift;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+
+        -- =============================================
+        -- 3. Loading Schema: Production
+        -- =============================================
+        PRINT '------------------------------------------------';
+        PRINT 'Loading Production Tables';
+        PRINT '------------------------------------------------';
+
+        -- Production_Product
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_Product';
+        TRUNCATE TABLE bronze.Production_Product;
+        INSERT INTO bronze.Production_Product SELECT * FROM AdventureWorks2022.Production.Product;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ProductCategory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ProductCategory';
+        TRUNCATE TABLE bronze.Production_ProductCategory;
+        INSERT INTO bronze.Production_ProductCategory SELECT * FROM AdventureWorks2022.Production.ProductCategory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ProductSubcategory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ProductSubcategory';
+        TRUNCATE TABLE bronze.Production_ProductSubcategory;
+        INSERT INTO bronze.Production_ProductSubcategory SELECT * FROM AdventureWorks2022.Production.ProductSubcategory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ProductModel
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ProductModel';
+        TRUNCATE TABLE bronze.Production_ProductModel;
+        INSERT INTO bronze.Production_ProductModel SELECT * FROM AdventureWorks2022.Production.ProductModel;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_Illustration
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_Illustration';
+        TRUNCATE TABLE bronze.Production_Illustration;
+        INSERT INTO bronze.Production_Illustration SELECT * FROM AdventureWorks2022.Production.Illustration;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ProductModelIllustration
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ProductModelIllustration';
+        TRUNCATE TABLE bronze.Production_ProductModelIllustration;
+        INSERT INTO bronze.Production_ProductModelIllustration SELECT * FROM AdventureWorks2022.Production.ProductModelIllustration;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ProductDescription
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ProductDescription';
+        TRUNCATE TABLE bronze.Production_ProductDescription;
+        INSERT INTO bronze.Production_ProductDescription SELECT * FROM AdventureWorks2022.Production.ProductDescription;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ProductModelProductDescriptionCulture
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ProductModelProductDescriptionCulture';
+        TRUNCATE TABLE bronze.Production_ProductModelProductDescriptionCulture;
+        INSERT INTO bronze.Production_ProductModelProductDescriptionCulture SELECT * FROM AdventureWorks2022.Production.ProductModelProductDescriptionCulture;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_Culture
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_Culture';
+        TRUNCATE TABLE bronze.Production_Culture;
+        INSERT INTO bronze.Production_Culture SELECT * FROM AdventureWorks2022.Production.Culture;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_UnitMeasure
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_UnitMeasure';
+        TRUNCATE TABLE bronze.Production_UnitMeasure;
+        INSERT INTO bronze.Production_UnitMeasure SELECT * FROM AdventureWorks2022.Production.UnitMeasure;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_Document
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_Document';
+        TRUNCATE TABLE bronze.Production_Document;
+        INSERT INTO bronze.Production_Document SELECT * FROM AdventureWorks2022.Production.Document;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ProductCostHistory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ProductCostHistory';
+        TRUNCATE TABLE bronze.Production_ProductCostHistory;
+        INSERT INTO bronze.Production_ProductCostHistory SELECT * FROM AdventureWorks2022.Production.ProductCostHistory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ProductListPriceHistory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ProductListPriceHistory';
+        TRUNCATE TABLE bronze.Production_ProductListPriceHistory;
+        INSERT INTO bronze.Production_ProductListPriceHistory SELECT * FROM AdventureWorks2022.Production.ProductListPriceHistory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ProductInventory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ProductInventory';
+        TRUNCATE TABLE bronze.Production_ProductInventory;
+        INSERT INTO bronze.Production_ProductInventory SELECT * FROM AdventureWorks2022.Production.ProductInventory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_Location
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_Location';
+        TRUNCATE TABLE bronze.Production_Location;
+        INSERT INTO bronze.Production_Location SELECT * FROM AdventureWorks2022.Production.Location;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_WorkOrder
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_WorkOrder';
+        TRUNCATE TABLE bronze.Production_WorkOrder;
+        INSERT INTO bronze.Production_WorkOrder SELECT * FROM AdventureWorks2022.Production.WorkOrder;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_WorkOrderRouting
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_WorkOrderRouting';
+        TRUNCATE TABLE bronze.Production_WorkOrderRouting;
+        INSERT INTO bronze.Production_WorkOrderRouting SELECT * FROM AdventureWorks2022.Production.WorkOrderRouting;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_ScrapReason
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_ScrapReason';
+        TRUNCATE TABLE bronze.Production_ScrapReason;
+        INSERT INTO bronze.Production_ScrapReason SELECT * FROM AdventureWorks2022.Production.ScrapReason;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_TransactionHistory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_TransactionHistory';
+        TRUNCATE TABLE bronze.Production_TransactionHistory;
+        INSERT INTO bronze.Production_TransactionHistory SELECT * FROM AdventureWorks2022.Production.TransactionHistory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Production_TransactionHistoryArchive
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Production_TransactionHistoryArchive';
+        TRUNCATE TABLE bronze.Production_TransactionHistoryArchive;
+        INSERT INTO bronze.Production_TransactionHistoryArchive SELECT * FROM AdventureWorks2022.Production.TransactionHistoryArchive;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+
+        -- =============================================
+        -- 4. Loading Schema: Purchasing
+        -- =============================================
+        PRINT '------------------------------------------------';
+        PRINT 'Loading Purchasing Tables';
+        PRINT '------------------------------------------------';
+
+        -- Purchasing_Vendor
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Purchasing_Vendor';
+        TRUNCATE TABLE bronze.Purchasing_Vendor;
+        INSERT INTO bronze.Purchasing_Vendor SELECT * FROM AdventureWorks2022.Purchasing.Vendor;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Purchasing_ProductVendor
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Purchasing_ProductVendor';
+        TRUNCATE TABLE bronze.Purchasing_ProductVendor;
+        INSERT INTO bronze.Purchasing_ProductVendor SELECT * FROM AdventureWorks2022.Purchasing.ProductVendor;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Purchasing_PurchaseOrderHeader
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Purchasing_PurchaseOrderHeader';
+        TRUNCATE TABLE bronze.Purchasing_PurchaseOrderHeader;
+        INSERT INTO bronze.Purchasing_PurchaseOrderHeader SELECT * FROM AdventureWorks2022.Purchasing.PurchaseOrderHeader;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Purchasing_PurchaseOrderDetail (مع استبعاد العمود المحسوب StockedQty)
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Purchasing_PurchaseOrderDetail';
+        TRUNCATE TABLE bronze.Purchasing_PurchaseOrderDetail;
+        INSERT INTO bronze.Purchasing_PurchaseOrderDetail (
+            PurchaseOrderID, PurchaseOrderDetailID, DueDate, OrderQty, ProductID, UnitPrice, LineTotal, ReceivedQty, RejectedQty, ModifiedDate
+        )
+        SELECT 
+            PurchaseOrderID, PurchaseOrderDetailID, DueDate, OrderQty, ProductID, UnitPrice, LineTotal, ReceivedQty, RejectedQty, ModifiedDate
+        FROM AdventureWorks2022.Purchasing.PurchaseOrderDetail;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Purchasing_ShipMethod
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Purchasing_ShipMethod';
+        TRUNCATE TABLE bronze.Purchasing_ShipMethod;
+        INSERT INTO bronze.Purchasing_ShipMethod SELECT * FROM AdventureWorks2022.Purchasing.ShipMethod;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+
+        -- =============================================
+        -- 5. Loading Schema: Sales
+        -- =============================================
+        PRINT '------------------------------------------------';
+        PRINT 'Loading Sales Tables';
+        PRINT '------------------------------------------------';
+
+        -- Sales_SalesOrderHeader
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SalesOrderHeader';
+        TRUNCATE TABLE bronze.Sales_SalesOrderHeader;
+        INSERT INTO bronze.Sales_SalesOrderHeader SELECT * FROM AdventureWorks2022.Sales.SalesOrderHeader;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SalesOrderDetail
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SalesOrderDetail';
+        TRUNCATE TABLE bronze.Sales_SalesOrderDetail;
+        INSERT INTO bronze.Sales_SalesOrderDetail SELECT * FROM AdventureWorks2022.Sales.SalesOrderDetail;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_Customer
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_Customer';
+        TRUNCATE TABLE bronze.Sales_Customer;
+        INSERT INTO bronze.Sales_Customer SELECT * FROM AdventureWorks2022.Sales.Customer;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_Store
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_Store';
+        TRUNCATE TABLE bronze.Sales_Store;
+        INSERT INTO bronze.Sales_Store SELECT * FROM AdventureWorks2022.Sales.Store;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SalesPerson
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SalesPerson';
+        TRUNCATE TABLE bronze.Sales_SalesPerson;
+        INSERT INTO bronze.Sales_SalesPerson SELECT * FROM AdventureWorks2022.Sales.SalesPerson;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SalesTerritory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SalesTerritory';
+        TRUNCATE TABLE bronze.Sales_SalesTerritory;
+        INSERT INTO bronze.Sales_SalesTerritory SELECT * FROM AdventureWorks2022.Sales.SalesTerritory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SalesTerritoryHistory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SalesTerritoryHistory';
+        TRUNCATE TABLE bronze.Sales_SalesTerritoryHistory;
+        INSERT INTO bronze.Sales_SalesTerritoryHistory SELECT * FROM AdventureWorks2022.Sales.SalesTerritoryHistory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SalesPersonQuotaHistory
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SalesPersonQuotaHistory';
+        TRUNCATE TABLE bronze.Sales_SalesPersonQuotaHistory;
+        INSERT INTO bronze.Sales_SalesPersonQuotaHistory SELECT * FROM AdventureWorks2022.Sales.SalesPersonQuotaHistory;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_CreditCard
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_CreditCard';
+        TRUNCATE TABLE bronze.Sales_CreditCard;
+        INSERT INTO bronze.Sales_CreditCard SELECT * FROM AdventureWorks2022.Sales.CreditCard;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_PersonCreditCard
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_PersonCreditCard';
+        TRUNCATE TABLE bronze.Sales_PersonCreditCard;
+        INSERT INTO bronze.Sales_PersonCreditCard SELECT * FROM AdventureWorks2022.Sales.PersonCreditCard;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_Currency
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_Currency';
+        TRUNCATE TABLE bronze.Sales_Currency;
+        INSERT INTO bronze.Sales_Currency SELECT * FROM AdventureWorks2022.Sales.Currency;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_CurrencyRate
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_CurrencyRate';
+        TRUNCATE TABLE bronze.Sales_CurrencyRate;
+        INSERT INTO bronze.Sales_CurrencyRate SELECT * FROM AdventureWorks2022.Sales.CurrencyRate;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SalesReason
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SalesReason';
+        TRUNCATE TABLE bronze.Sales_SalesReason;
+        INSERT INTO bronze.Sales_SalesReason SELECT * FROM AdventureWorks2022.Sales.SalesReason;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SalesOrderHeaderSalesReason
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SalesOrderHeaderSalesReason';
+        TRUNCATE TABLE bronze.Sales_SalesOrderHeaderSalesReason;
+        INSERT INTO bronze.Sales_SalesOrderHeaderSalesReason SELECT * FROM AdventureWorks2022.Sales.SalesOrderHeaderSalesReason;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SpecialOffer
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SpecialOffer';
+        TRUNCATE TABLE bronze.Sales_SpecialOffer;
+        INSERT INTO bronze.Sales_SpecialOffer SELECT * FROM AdventureWorks2022.Sales.SpecialOffer;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SpecialOfferProduct
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SpecialOfferProduct';
+        TRUNCATE TABLE bronze.Sales_SpecialOfferProduct;
+        INSERT INTO bronze.Sales_SpecialOfferProduct SELECT * FROM AdventureWorks2022.Sales.SpecialOfferProduct;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_ShoppingCartItem
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_ShoppingCartItem';
+        TRUNCATE TABLE bronze.Sales_ShoppingCartItem;
+        INSERT INTO bronze.Sales_ShoppingCartItem SELECT * FROM AdventureWorks2022.Sales.ShoppingCartItem;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+        -- Sales_SalesTaxRate
+        SET @start_time = GETDATE();
+        PRINT 'Inserting into: bronze.Sales_SalesTaxRate';
+        TRUNCATE TABLE bronze.Sales_SalesTaxRate;
+        INSERT INTO bronze.Sales_SalesTaxRate SELECT * FROM AdventureWorks2022.Sales.SalesTaxRate;
+        SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '-----------------------';
+
+    END TRY
+    BEGIN CATCH
+        PRINT '================================================';
+        PRINT 'ERROR OCCURRED DURING LOADING BRONZE LAYER';
+        PRINT 'ERROR MESSAGE: ' + ERROR_MESSAGE();
+        PRINT 'ERROR NUMBER: ' + CAST(ERROR_NUMBER() AS NVARCHAR);
+        PRINT 'ERROR STATE: ' + CAST(ERROR_STATE() AS NVARCHAR);
+        PRINT '================================================';
+    END CATCH
+
+    SET @batch_end_time = GETDATE();
+    PRINT '================================================';
+    PRINT '>> Total Load Duration Bronze Layer: ' + CAST(DATEDIFF(second, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
+    PRINT '================================================';
+END;
+GO
