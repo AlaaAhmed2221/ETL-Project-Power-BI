@@ -1,5 +1,4 @@
-
-
+------DDL BROZE LAyER----------
 
 --------Human_Resources-------------
 IF OBJECT_ID('bronze.HR_departments', 'U') IS NOT NULL
@@ -449,15 +448,16 @@ CREATE TABLE bronze.Production_ProductModelIllustration (
     ModifiedDate DATETIME
 );
 
-IF OBJECT_ID('bronze.Production_ProductDescription', 'U') IS NOT NULL
-    DROP TABLE bronze.Production_ProductDescription;
+IF OBJECT_ID('bronze.Production_ProductModelProductDescriptionCulture', 'U') IS NOT NULL
+    DROP TABLE bronze.Production_ProductModelProductDescriptionCulture;
 
-CREATE TABLE bronze.Production_ProductDescription (
+CREATE TABLE bronze.Production_ProductModelProductDescriptionCulture (
+    ProductModelID INT,
     ProductDescriptionID INT,
-    Description NVARCHAR(400),
-    rowguid UNIQUEIDENTIFIER,
+    CultureID NCHAR(6),
     ModifiedDate DATETIME
 );
+
 
 
 IF OBJECT_ID('bronze.production_productPhoto', 'U') IS NOT NULL
@@ -661,21 +661,22 @@ CREATE TABLE bronze.Purchasing_ShipMethod (
     ModifiedDate DATETIME
 );
 
+IF OBJECT_ID('bronze.Purchasing_ProductVendor', 'U') IS NOT NULL
+    DROP TABLE bronze.Purchasing_ProductVendor;
 
-IF OBJECT_ID('bronze.Purchasing_Vendor', 'U') IS NOT NULL
-    DROP TABLE bronze.Purchasing_Vendor;
-
-CREATE TABLE bronze.Purchasing_Vendor (
+CREATE TABLE bronze.Purchasing_ProductVendor (
+    ProductID INT,
     BusinessEntityID INT,
-    AccountNumber NVARCHAR(15),
-    Name NVARCHAR(50),
-    CreditRating TINYINT,
-    PreferredVendorStatus BIT,
-    ActiveFlag BIT,
-    PurchasingWebServiceURL NVARCHAR(1024),
+    AverageLeadTime INT,
+    StandardPrice MONEY,
+    LastReceiptCost MONEY,
+    LastReceiptDate DATETIME,
+    MinOrderQty INT,
+    MaxOrderQty INT,
+    OnOrderQty INT,
+    UnitMeasureCode NCHAR(3),
     ModifiedDate DATETIME
 );
-
 
 --------Sales---------------
 
@@ -948,3 +949,5 @@ CREATE TABLE bronze.Sales_Store (
     rowguid UNIQUEIDENTIFIER,
     ModifiedDate DATETIME
 );
+
+
