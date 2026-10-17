@@ -1,4 +1,4 @@
-------DDL Silver LAyER----------
+-----DDL Silver LAyER----------
 
 --------Human_Resources-------------
 IF OBJECT_ID('silver.HR_departments', 'U') IS NOT NULL
@@ -8,7 +8,8 @@ create table silver.HR_departments(
 	departmentID smallint,
 	name varchar(50),
 	groupName varchar(50),
-	modifiedDate datetime
+	modifiedDate datetime,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 )
 GO
 
@@ -32,7 +33,8 @@ CREATE TABLE silver.HR_employee (
     SickLeaveHours      SMALLINT      ,
     CurrentFlag         BIT           ,
     rowguid             UNIQUEIDENTIFIER ,
-    ModifiedDate        DATETIME      
+    ModifiedDate        DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()      
 )
 GO
 
@@ -46,7 +48,8 @@ CREATE TABLE silver.HR_employeeDepartmentHistory (
     ShiftID             TINYINT       ,
     StartDate           DATE          ,
     EndDate             DATE          ,
-    ModifiedDate        DATETIME      
+    ModifiedDate        DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()      
 );
 GO
 
@@ -59,7 +62,8 @@ CREATE TABLE silver.HR_employeePayHistory (
     RateChangeDate      DATETIME      ,
     Rate                MONEY         ,
     PayFrequency        TINYINT       ,
-    ModifiedDate        DATETIME      
+    ModifiedDate        DATETIME ,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()     
 );
 GO
 
@@ -71,7 +75,8 @@ CREATE TABLE silver.HR_jobCandidate (
     JobCandidateID      INT           ,
     BusinessEntityID    INT           ,
     Resume              XML           ,
-    ModifiedDate        DATETIME      
+    ModifiedDate        DATETIME ,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()     
 );
 GO
 
@@ -84,7 +89,8 @@ CREATE TABLE silver.HR_shift (
     Name                NVARCHAR(50)  ,
     StartTime           TIME          ,
     EndTime             TIME          ,
-    ModifiedDate        DATETIME      
+    ModifiedDate        DATETIME  ,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()    
 );
 GO
 
@@ -101,7 +107,8 @@ CREATE TABLE silver.Person_Address (
     PostalCode NVARCHAR(15),
     SpatialLocation GEOGRAPHY,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -112,7 +119,8 @@ CREATE TABLE silver.Person_AddressType (
     AddressTypeID INT,
     Name NVARCHAR(50),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -122,7 +130,8 @@ IF OBJECT_ID('silver.Person_BusinessEntity', 'U') IS NOT NULL
 CREATE TABLE silver.Person_BusinessEntity (
     BusinessEntityID INT,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -134,7 +143,8 @@ CREATE TABLE silver.Person_BusinessEntityAddress (
     AddressID INT,
     AddressTypeID INT,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Person_BusinessEntityContact', 'U') IS NOT NULL
@@ -145,7 +155,8 @@ CREATE TABLE silver.Person_BusinessEntityContact (
     PersonID INT,
     ContactTypeID INT,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Person_ContactType', 'U') IS NOT NULL
@@ -154,7 +165,8 @@ IF OBJECT_ID('silver.Person_ContactType', 'U') IS NOT NULL
 CREATE TABLE silver.Person_ContactType (
     ContactTypeID INT,
     Name NVARCHAR(50),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -164,7 +176,8 @@ IF OBJECT_ID('silver.Person_CountryRegion', 'U') IS NOT NULL
 CREATE TABLE silver.Person_CountryRegion (
     CountryRegionCode NVARCHAR(3),
     Name NVARCHAR(50),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -176,7 +189,8 @@ CREATE TABLE silver.Person_EmailAddress (
     EmailAddressID INT,
     EmailAddress NVARCHAR(50),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -188,7 +202,8 @@ CREATE TABLE silver.Person_Password (
     PasswordHash VARCHAR(128),
     PasswordSalt VARCHAR(10),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -208,7 +223,8 @@ CREATE TABLE silver.Person_Person (
     AdditionalContactInfo XML,
     Demographics XML,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -219,7 +235,8 @@ CREATE TABLE silver.Person_PersonPhone (
     BusinessEntityID INT,
     PhoneNumber NVARCHAR(25),
     PhoneNumberTypeID INT,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -229,7 +246,8 @@ IF OBJECT_ID('silver.Person_PhoneNumberType', 'U') IS NOT NULL
 CREATE TABLE silver.Person_PhoneNumberType (
     PhoneNumberTypeID INT,
     Name NVARCHAR(50),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Person_StateProvince', 'U') IS NOT NULL
@@ -243,7 +261,8 @@ CREATE TABLE silver.Person_StateProvince (
     Name NVARCHAR(50),
     TerritoryID INT,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 ----------production--------------
@@ -253,15 +272,16 @@ IF OBJECT_ID('silver.production_billOfMaterials', 'U') IS NOT NULL
 
 
 create table silver.production_billOfMaterials(
-billOfMaterialID int,
-productAssemblyID int,
-componentID int,
-startDate datetime,
-endDate datetime,
-unitMeasureCode nchar(3),
-BOMlevel smallint,
-perAssemplyQTY decimal(8,2),
-modifiedDate datetime
+	billOfMaterialID int,
+	productAssemblyID int,
+	componentID int,
+	startDate datetime,
+	endDate datetime,
+	unitMeasureCode nchar(3),
+	BOMlevel smallint,
+	perAssemplyQTY decimal(8,2),
+	modifiedDate datetime,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 )
 
 
@@ -271,7 +291,8 @@ IF OBJECT_ID('silver.Production_Culture', 'U') IS NOT NULL
 CREATE TABLE silver.Production_Culture (
     CultureID NCHAR(6),
     Name NVARCHAR(50),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -292,7 +313,8 @@ CREATE TABLE silver.Production_Document (
     DocumentSummary NVARCHAR(MAX),
     Document VARBINARY(MAX),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Production_Illustration', 'U') IS NOT NULL
@@ -301,7 +323,8 @@ IF OBJECT_ID('silver.Production_Illustration', 'U') IS NOT NULL
 CREATE TABLE silver.Production_Illustration (
     IllustrationID INT,
     Diagram XML,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -313,7 +336,8 @@ CREATE TABLE silver.Production_Location (
     Name NVARCHAR(50),
     CostRate SMALLINT,
     Availability DECIMAL(8, 2),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -345,7 +369,8 @@ CREATE TABLE silver.Production_Product (
     SellEndDate DATETIME,
     DiscontinuedDate DATETIME,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -356,7 +381,8 @@ CREATE TABLE silver.Production_ProductCategory (
     ProductCategoryID INT,
     Name NVARCHAR(50),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Production_ProductCostHistory', 'U') IS NOT NULL
@@ -367,7 +393,8 @@ CREATE TABLE silver.Production_ProductCostHistory (
     StartDate DATETIME,
     EndDate DATETIME,
     StandardCost MONEY,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Production_ProductDescription', 'U') IS NOT NULL
@@ -377,7 +404,8 @@ CREATE TABLE silver.Production_ProductDescription (
     ProductDescriptionID INT,
     Description NVARCHAR(400),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Production_Document', 'U') IS NOT NULL
@@ -397,7 +425,8 @@ CREATE TABLE silver.Production_Document (
     DocumentSummary NVARCHAR(MAX),
     Document VARBINARY(MAX),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -411,7 +440,8 @@ CREATE TABLE silver.Production_ProductInventory (
     Bin TINYINT,
     Quantity SMALLINT,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Production_ProductListPriceHistory', 'U') IS NOT NULL
@@ -422,7 +452,8 @@ CREATE TABLE silver.Production_ProductListPriceHistory (
     StartDate DATETIME,
     EndDate DATETIME,
     ListPrice MONEY,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -435,7 +466,8 @@ CREATE TABLE silver.Production_ProductModel (
     CatalogDescription XML,
     Instructions XML,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -445,7 +477,8 @@ IF OBJECT_ID('silver.Production_ProductModelIllustration', 'U') IS NOT NULL
 CREATE TABLE silver.Production_ProductModelIllustration (
     ProductModelID INT,
     IllustrationID INT,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Production_ProductModelProductDescriptionCulture', 'U') IS NOT NULL
@@ -455,7 +488,8 @@ CREATE TABLE silver.Production_ProductModelProductDescriptionCulture (
     ProductModelID INT,
     ProductDescriptionID INT,
     CultureID NCHAR(6),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -464,10 +498,11 @@ IF OBJECT_ID('silver.production_productPhoto', 'U') IS NOT NULL
     DROP TABLE silver.production_productPhoto;
 
 create table silver.production_productPhoto(
-productphotoID int,
-thumNailPhoto varbinary(max),
-largePhotofileName nvarchar(50),
-modifiedDate datetime
+	productphotoID int,
+	thumNailPhoto varbinary(max),
+	largePhotofileName nvarchar(50),
+	modifiedDate datetime,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 )
 
 
@@ -478,7 +513,8 @@ create table silver.production_proproductPhoto(
 	productID int,
 	productphotoID int,
 	primaryy bit,
-	modifiedDate datetime
+	modifiedDate datetime,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 )
 
 
@@ -493,7 +529,8 @@ create table silver.Production_ProductReview(
 	emailAddress nvarchar(50),
 	rating int,
 	comments nvarchar(3850),
-	modifiedDate datetime
+	modifiedDate datetime,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 )
 
 IF OBJECT_ID('silver.Production_ProductSubcategory', 'U') IS NOT NULL
@@ -504,7 +541,8 @@ CREATE TABLE silver.Production_ProductSubcategory (
     ProductCategoryID INT,
     Name NVARCHAR(50),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -514,7 +552,8 @@ IF OBJECT_ID('silver.Production_ScrapReason', 'U') IS NOT NULL
 CREATE TABLE silver.Production_ScrapReason (
     ScrapReasonID SMALLINT,
     Name NVARCHAR(50),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -530,7 +569,8 @@ CREATE TABLE silver.Production_TransactionHistory (
     TransactionType NCHAR(1),
     Quantity INT,
     ActualCost MONEY,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -546,7 +586,8 @@ CREATE TABLE silver.Production_TransactionHistoryArchive (
     TransactionType NCHAR(1),
     Quantity INT,
     ActualCost MONEY,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -556,7 +597,8 @@ IF OBJECT_ID('silver.Production_UnitMeasure', 'U') IS NOT NULL
 CREATE TABLE silver.Production_UnitMeasure (
     UnitMeasureCode NCHAR(3),
     Name NVARCHAR(50),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -573,7 +615,8 @@ CREATE TABLE silver.Production_WorkOrder (
     EndDate DATETIME,
     DueDate DATETIME,
     ScrapReasonID SMALLINT,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -592,7 +635,8 @@ CREATE TABLE silver.Production_WorkOrderRouting (
     ActualResourceHrs DECIMAL(9, 4),
     PlannedCost MONEY,
     ActualCost MONEY,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -608,7 +652,8 @@ CREATE TABLE silver.Purchasing_Vendor (
     PreferredVendorStatus BIT,
     ActiveFlag BIT,
     PurchasingWebServiceURL NVARCHAR(1024),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -626,7 +671,8 @@ CREATE TABLE silver.Purchasing_PurchaseOrderDetail (
     ReceivedQty DECIMAL(8, 2),
     RejectedQty DECIMAL(8, 2),
     StockedQty AS (ReceivedQty - RejectedQty),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Purchasing_PurchaseOrderHeader', 'U') IS NOT NULL
@@ -645,7 +691,8 @@ CREATE TABLE silver.Purchasing_PurchaseOrderHeader (
     TaxAmt MONEY,
     Freight MONEY,
     TotalDue MONEY,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -658,7 +705,8 @@ CREATE TABLE silver.Purchasing_ShipMethod (
     ShipBase MONEY,
     ShipRate MONEY,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 IF OBJECT_ID('silver.Purchasing_ProductVendor', 'U') IS NOT NULL
@@ -675,7 +723,8 @@ CREATE TABLE silver.Purchasing_ProductVendor (
     MaxOrderQty INT,
     OnOrderQty INT,
     UnitMeasureCode NCHAR(3),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 --------Sales---------------
@@ -686,7 +735,8 @@ IF OBJECT_ID('silver.sales_countryRegionCurrency', 'U') IS NOT NULL
 create table silver.sales_countryRegionCurrency(
 	countryRegionCode nvarchar(3),
 	currencyCode nchar(3),
-	modifiedDate datetime
+	modifiedDate datetime,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 )
 
 
@@ -699,7 +749,8 @@ CREATE TABLE silver.Sales_CreditCard (
     CardNumber NVARCHAR(25),
     ExpMonth TINYINT,
     ExpYear SMALLINT,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -709,7 +760,8 @@ IF OBJECT_ID('silver.Sales_Currency', 'U') IS NOT NULL
 CREATE TABLE silver.Sales_Currency (
     CurrencyCode NCHAR(3),
     Name NVARCHAR(50),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -723,7 +775,8 @@ CREATE TABLE silver.Sales_CurrencyRate (
     ToCurrencyCode NCHAR(3),
     AverageRate MONEY,
     EndOfDayRate MONEY,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -737,7 +790,8 @@ CREATE TABLE silver.Sales_Customer (
     TerritoryID INT,
     AccountNumber VARCHAR(10),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -747,7 +801,8 @@ IF OBJECT_ID('silver.Sales_PersonCreditCard', 'U') IS NOT NULL
 CREATE TABLE silver.Sales_PersonCreditCard (
     BusinessEntityID INT,
     CreditCardID INT,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -765,7 +820,8 @@ CREATE TABLE silver.Sales_SalesOrderDetail (
     UnitPriceDiscount MONEY,
     LineTotal NUMERIC(38, 6),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -798,7 +854,8 @@ CREATE TABLE silver.Sales_SalesOrderHeader (
     TotalDue MONEY,
     Comment NVARCHAR(128),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -808,7 +865,8 @@ IF OBJECT_ID('silver.Sales_SalesOrderHeaderSalesReason', 'U') IS NOT NULL
 CREATE TABLE silver.Sales_SalesOrderHeaderSalesReason (
     SalesOrderID INT,
     SalesReasonID INT,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -824,7 +882,8 @@ CREATE TABLE silver.Sales_SalesPerson (
     SalesYTD MONEY,
     SalesLastYear MONEY,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -836,7 +895,8 @@ CREATE TABLE silver.Sales_SalesPersonQuotaHistory (
     QuotaDate DATETIME,
     SalesQuota MONEY,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -847,7 +907,8 @@ CREATE TABLE silver.Sales_SalesReason (
     SalesReasonID INT,
     Name NVARCHAR(50),
     ReasonType NVARCHAR(50),
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -861,7 +922,8 @@ CREATE TABLE silver.Sales_SalesTaxRate (
     TaxRate SMALLMONEY,
     Name NVARCHAR(50),
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -878,7 +940,8 @@ CREATE TABLE silver.Sales_SalesTerritory (
     CostYTD MONEY,
     CostLastYear MONEY,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -891,7 +954,8 @@ CREATE TABLE silver.Sales_SalesTerritoryHistory (
     StartDate DATETIME,
     EndDate DATETIME,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -904,7 +968,8 @@ CREATE TABLE silver.Sales_ShoppingCartItem (
     Quantity INT,
     ProductID INT,
     DateCreated DATETIME,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -922,7 +987,8 @@ CREATE TABLE silver.Sales_SpecialOffer (
     MinQty INT,
     MaxQty INT,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -933,7 +999,8 @@ CREATE TABLE silver.Sales_SpecialOfferProduct (
     SpecialOfferID INT,
     ProductID INT,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 
 
@@ -947,5 +1014,6 @@ CREATE TABLE silver.Sales_Store (
     SalesPersonID INT,
     Demographics XML,
     rowguid UNIQUEIDENTIFIER,
-    ModifiedDate DATETIME
+    ModifiedDate DATETIME,
+	dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
