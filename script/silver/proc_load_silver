@@ -1,0 +1,321 @@
+CREATE OR ALTER PROCEDURE silver.load_silver AS
+BEGIN
+    DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME; 
+    BEGIN TRY
+        SET @batch_start_time = GETDATE();
+        PRINT '================================================';
+        PRINT 'Loading Silver Layer';
+        PRINT '================================================';
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Person_Person'
+truncate table silver.Person_Person
+print'>> inserting data into:silver.Person_Person'
+insert into silver.Person_Person(
+	BusinessEntityID,
+	PersonType,
+	Title,
+	FirstName,
+	LastName,
+	Suffix,
+	EmailPromotion
+)
+select
+	BusinessEntityID,
+	PersonType,
+    CASE 
+        WHEN UPPER(TRIM(REPLACE(Title, '.', ''))) IN ('MR', 'SR') THEN 'Mr.'
+        WHEN UPPER(TRIM(REPLACE(Title, '.', ''))) IN ('MRS', 'SRA') THEN 'Mrs.'
+        WHEN UPPER(TRIM(REPLACE(Title, '.', ''))) IN ('MS', 'MISS') THEN 'Ms.'
+        WHEN Title IS NULL OR TRIM(Title) = '' THEN NULL
+        ELSE CONCAT(UPPER(LEFT(TRIM(Title), 1)), LOWER(SUBSTRING(TRIM(Title), 2, LEN(Title))))
+    END AS Title,
+	FirstName,
+	LastName,
+	Suffix,
+	EmailPromotion
+from bronze.Person_Person
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Production_Product'
+truncate table silver.Production_Product
+print'>> inserting data into:silver.Production_Product'
+insert into silver.Production_Product(
+	ProductID,
+	name,
+	ProductNumber,
+	MakeFlag,
+	FinishedGoodsFlag,
+	Color,
+	SafetyStockLevel,
+	ReorderPoint,
+	StandardCost,
+	ListPrice,
+	Size,
+	SizeUnitMeasureCode,
+	WeightUnitMeasureCode,
+	Weight,
+	DaysToManufacture,
+	ProductLine,
+	Class,
+	Style,
+	ProductSubcategoryID,
+	SellStartDate,
+	SellEndDate,
+	DiscontinuedDate
+)
+select
+	ProductID,
+	name,
+	ProductNumber,
+	MakeFlag,
+	FinishedGoodsFlag,
+	Color,
+	SafetyStockLevel,
+	ReorderPoint,
+	StandardCost,
+	ListPrice,
+	Size,
+	SizeUnitMeasureCode,
+	WeightUnitMeasureCode,
+	Weight,
+	DaysToManufacture,
+	ProductLine,
+	Class,
+	Style,
+	ProductSubcategoryID,
+	SellStartDate,
+	SellEndDate,
+	DiscontinuedDate
+from bronze.Production_Product
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Production_ProductCategory'
+truncate table silver.Production_ProductCategory
+print'>> inserting data into:silver.Production_ProductCategory'
+insert into silver.Production_ProductCategory(
+	ProductCategoryID,
+	Name
+)
+select
+	ProductCategoryID,
+	Name
+from bronze.Production_ProductCategory
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Production_ProductSubcategory'
+truncate table silver.Production_ProductSubcategory
+print'>> inserting data into:silver.Production_ProductSubcategory'
+insert into silver.Production_ProductSubcategory(
+	ProductSubcategoryID,
+	ProductCategoryID,
+	name
+)
+select
+	ProductSubcategoryID,
+	ProductCategoryID,
+	name
+from bronze.Production_ProductSubcategory
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Sales_SalesOrderHeader'
+truncate table silver.Sales_SalesOrderHeader
+print'>> inserting data into:silver.Sales_SalesOrderHeader'
+insert into silver.Sales_SalesOrderHeader(
+	SalesOrderID,
+	RevisionNumber,
+	Status,
+	OnlineOrderFlag,
+	SalesOrderNumber,
+	PurchaseOrderNumber,
+	AccountNumber,
+	SalesPersonID,
+	CustomerID,
+	TerritoryID,
+	ShipMethodID,
+	SubTotal,
+	TaxAmt,
+	Freight,
+	TotalDue
+)
+select
+	SalesOrderID,
+	RevisionNumber,
+	Status,
+	OnlineOrderFlag,
+	SalesOrderNumber,
+	PurchaseOrderNumber,
+	AccountNumber,
+	SalesPersonID,
+	CustomerID,
+	TerritoryID,
+	ShipMethodID,
+	SubTotal,
+	TaxAmt,
+	Freight,
+	TotalDue
+from bronze.Sales_SalesOrderHeader
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Sales_SalesOrderDetail'
+truncate table silver.Sales_SalesOrderDetail
+print'>> inserting data into:silver.Sales_SalesOrderDetail'
+insert into silver.Sales_SalesOrderDetail(
+	SalesOrderID,
+	SalesOrderDetailID,
+	CarrierTrackingNumber,
+	ProductID,
+	OrderQty,
+	SpecialOfferID,
+	UnitPrice,
+	UnitPriceDiscount,
+	LineTotal
+)
+select
+	SalesOrderID,
+	SalesOrderDetailID,
+	CarrierTrackingNumber,
+	ProductID,
+	OrderQty,
+	SpecialOfferID,
+	UnitPrice,
+	UnitPriceDiscount,
+	LineTotal
+from bronze.Sales_SalesOrderDetail
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Sales_Customer'
+truncate table silver.Sales_Customer
+print'>> inserting data into:silver.Sales_Customer'
+insert into silver.Sales_Customer(
+	CustomerID,
+	PersonID,
+	StoreID,
+	TerritoryID
+)
+select
+	CustomerID,
+	PersonID,
+	StoreID,
+	TerritoryID
+from bronze.Sales_Customer
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Sales_SalesPerson'
+truncate table silver.Sales_SalesPerson
+print'>> inserting data into:silver.Sales_SalesPerson'
+insert into silver.Sales_SalesPerson(
+	BusinessEntityID,
+	TerritoryID,
+	SalesQuota,
+	Bonus,
+	CommissionPct,
+	SalesYTD,
+	SalesLastYear
+)
+select
+	BusinessEntityID,
+	TerritoryID,
+	SalesQuota,
+	Bonus,
+	CommissionPct,
+	SalesYTD,
+	SalesLastYear
+from bronze.Sales_SalesPerson
+
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Sales_SalesTerritory'
+truncate table silver.Sales_SalesTerritory
+print'>> inserting data into:silver.Sales_SalesTerritory'
+insert into silver.Sales_SalesTerritory(
+	TerritoryID,
+	Name,
+	CountryRegionCode,
+	SalesYTD,
+	SalesLastYear
+)
+select
+	TerritoryID,
+	Name,
+	CountryRegionCode,
+	SalesYTD,
+	SalesLastYear
+from bronze.Sales_SalesTerritory
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+
+set @start_time=GETDATE()
+print'>>Truncating Table:silver.Sales_Store'
+truncate table silver.Sales_Store
+print'>> inserting data into:silver.Sales_Store'
+insert into silver.Sales_Store(
+	BusinessEntityID,
+	Name,
+	SalesPersonID
+)
+select 
+	BusinessEntityID,
+	Name,
+	SalesPersonID
+from bronze.Sales_Store
+SET @end_time = GETDATE();
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> -------------';
+
+ SET @batch_end_time = GETDATE();
+		PRINT '=========================================='
+		PRINT 'Loading Silver Layer is Completed';
+        PRINT ' Total Load Duration: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
+		PRINT '=========================================='
+		
+	end try
+	begin catch
+		PRINT '=========================================='
+		PRINT 'ERROR OCCURED DURING LOADING BRONZE LAYER'
+		PRINT 'Error Message' + ERROR_MESSAGE();
+		PRINT 'Error Message' + CAST (ERROR_NUMBER() AS NVARCHAR);
+		PRINT 'Error Message' + CAST (ERROR_STATE() AS NVARCHAR);
+		PRINT '=========================================='
+	end catch
+end
+
+
+exec silver.load_silver
