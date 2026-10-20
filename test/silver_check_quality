@@ -1,1 +1,29 @@
+select * from silver.Sales_SalesTerritory
 
+select *from bronze.Sales_SalesTerritory
+
+SELECT 'Person_Person' AS TableName, 
+       (SELECT COUNT(*) FROM bronze.Person_Person) AS BronzeCount, 
+       (SELECT COUNT(*) FROM silver.Person_Person) AS SilverCount
+UNION ALL
+SELECT 'Production_Product', 
+       (SELECT COUNT(*) FROM bronze.Production_Product), 
+       (SELECT COUNT(*) FROM silver.Production_Product)
+UNION ALL
+SELECT 'Sales_SalesOrderHeader', 
+       (SELECT COUNT(*) FROM bronze.Sales_SalesOrderHeader), 
+       (SELECT COUNT(*) FROM silver.Sales_SalesOrderHeader)
+UNION ALL
+SELECT 'Sales_SalesOrderDetail', 
+       (SELECT COUNT(*) FROM bronze.Sales_SalesOrderDetail), 
+       (SELECT COUNT(*) FROM silver.Sales_SalesOrderDetail);
+
+
+
+SELECT distinct Title, COUNT(*) AS Count
+from silver.Person_Person
+group by Title;
+
+select * 
+from silver.Sales_SalesOrderHeader
+where SalesOrderID IS NULL OR CustomerID IS NULL;
