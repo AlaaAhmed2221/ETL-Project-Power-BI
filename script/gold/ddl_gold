@@ -1,0 +1,156 @@
+
+IF OBJECT_ID('gold.dim_product', 'v') IS NOT NULL
+DROP VIEW gold.dim_product;
+GO
+
+create view gold.dim_product AS
+select
+ROW_NUMBER() OVER (ORDER BY productid) AS product_key,
+sc.ProductSubcategoryID,
+c.ProductCategoryID,
+p.ProductID,
+c.Name category_name,
+sc.Name subCategory_name,
+p.Name product_name
+from silver.Production_Product p
+left join silver.Production_ProductSubcategory sc
+on p.ProductSubcategoryID=sc.ProductSubcategoryID
+left join silver.Production_ProductCategory c
+on sc.ProductCategoryID=c.ProductCategoryID
+
+
+
+IF OBJECT_ID('gold.dim_territory', 'v') IS NOT NULL
+DROP VIEW gold.dim_territory;
+GO
+
+create view gold.dim_territory AS
+select
+ROW_NUMBER() OVER (ORDER BY TerritoryID) AS Territory_key,
+st.TerritoryID,
+st.Name,
+st.SalesYTD,
+st.SalesLastYear,
+st.CostYTD,
+st.CostLastYear
+from silver.Sales_SalesTerritory st
+
+
+
+IF OBJECT_ID('gold.dim_store', 'v') IS NOT NULL
+DROP VIEW gold.dim_store;
+GO
+
+create view gold.dim_store AS
+select
+ROW_NUMBER() OVER (ORDER BY st.BusinessEntityID) AS store_key,
+st.BusinessEntityID,
+sp.BusinessEntityID person_id,
+st.Name
+from silver.Sales_Store st
+left join silver.Sales_SalesPerson sp
+on sp.BusinessEntityID=st.SalesPersonID
+
+
+IF OBJECT_ID('gold.dim_customer', 'v') IS NOT NULL
+DROP VIEW gold.dim_customer;
+GO
+
+create view gold.dim_customer AS
+select
+ROW_NUMBER() OVER (ORDER BY CustomerID) AS Customer_key,
+c.CustomerID,
+c.AccountNumber,
+c.PersonID,
+c.StoreID,
+c.TerritoryID
+from silver.Sales_Customer c
+
+
+
+IF OBJECT_ID('silver.Dim_Date', 'U') IS NOT NULL
+    DROP TABLE silver.Dim_Date;
+GO
+
+CREATE TABLE silver.Dim_Date (
+    DateKey INT PRIMARY KEY,                
+    FullDate DATE NOT NULL,                 
+    DayName NVARCHAR(20) NOT NULL,          
+    MonthNumber INT NOT NULL,                
+    MonthName NVARCHAR(20) NOT NULL,        
+    MonthShortName NVARCHAR(10) NOT NULL,   
+    CalendarQuarter INT NOT NULL,            
+    CalendarYear INT NOT NULL                
+);
+GO
+
+WITH DateRange AS (
+    SELECT CAST('2011-01-01' AS DATE) AS FullDate
+    UNION ALL
+    SELECT DATEADD(DAY, 1, FullDate)
+    FROM DateRange
+    WHERE FullDate < '2014-12-31'
+)
+INSERT INTO silver.Dim_Date (
+    DateKey,
+    FullDate,
+    DayName,
+    MonthNumber,
+    MonthName,
+    MonthShortName,
+    CalendarQuarter,
+    CalendarYear
+)
+SELECT 
+    CAST(FORMAT(FullDate, 'yyyyMMdd') AS INT) AS DateKey,
+    FullDate,
+    DATENAME(WEEKDAY, FullDate) AS DayName,
+    MONTH(FullDate) AS MonthNumber,
+    DATENAME(MONTH, FullDate) AS MonthName,
+    LEFT(DATENAME(MONTH, FullDate), 3) AS MonthShortName,
+    DATEPART(QUARTER, FullDate) AS CalendarQuarter,
+    YEAR(FullDate) AS CalendarYear
+FROM DateRange
+OPTION (MAXRECURSION 2000);
+GO
+
+
+IF OBJECT_ID('gold.fact_sales', 'v') IS NOT NULL
+DROP VIEW gold.fact_sales;
+GO
+
+create view gold.fact_sales AS
+select
+h.SalesOrderID,
+d.SalesOrderDetailID,
+c.Customer_key,
+p.product_key,
+s.store_key,
+t.Territory_key,
+
+CAST(FORMAT(h.OrderDate, 'yyyyMMdd') AS INT) AS OrderDateKey,
+CAST(FORMAT(h.DueDate, 'yyyyMMdd') AS INT) AS DueDateKey,
+
+h.Freight,
+h.Status,
+h.SubTotal,
+h.TaxAmt,
+h.TotalDue,
+d.OrderQty,
+d.UnitPrice,
+d.UnitPriceDiscount,
+d.LineTotal,
+
+h.OrderDate,
+h.DueDate
+from silver.Sales_SalesOrderDetail d
+left join silver.Sales_SalesOrderHeader h  
+on d.SalesOrderID=h.SalesOrderID
+left join gold.dim_customer c
+on c.CustomerID=h.CustomerID
+left join gold.dim_product p
+on p.ProductID=d.ProductID
+left join gold.dim_store s
+on s.BusinessEntityID=h.SalesPersonID
+left join gold.dim_territory t
+on t.TerritoryID=h.TerritoryID
