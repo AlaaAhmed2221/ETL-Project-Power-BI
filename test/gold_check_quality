@@ -1,0 +1,25 @@
+select ProductID,COUNT(ProductID)
+from gold.dim_product
+group by ProductID
+having COUNT(ProductID)>1
+
+select BusinessEntityID,COUNT(BusinessEntityID)
+from gold.dim_store
+group by BusinessEntityID
+having COUNT(BusinessEntityID)>1
+
+select SalesOrderDetailID,COUNT(SalesOrderDetailID)
+from gold.fact_sales
+group by SalesOrderDetailID
+having COUNT(SalesOrderDetailID)>1
+
+
+SELECT *
+FROM gold.fact_sales
+WHERE SalesOrderDetailID IN (
+    SELECT SalesOrderDetailID
+    FROM gold.fact_sales
+    group by SalesOrderDetailID
+    having COUNT(SalesOrderDetailID) > 1
+)
+ORDER BY SalesOrderDetailID;
